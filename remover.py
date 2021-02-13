@@ -10,6 +10,10 @@ from matplotlib import colors
 import numpy as np
 from PIL import Image, ImageEnhance
 
+
+from pdf2image import convert_from_path
+import tempfile
+
 # Packages for K Means Clustering
 
 
@@ -234,9 +238,63 @@ def pil_process(image_path) -> Image:
 
 
 # do_conversion(image_path)
-hsv_masking(image_path)
+# hsv_masking(image_path)
 
 # hsv_masking(image_path_two)
+
+pdf_path = './music.pdf'
+pdf_two = './jesus_in_the_garden.pdf'
+
+
+def pdf_to_images(pdf_path: str) -> list:
+    with tempfile.TemporaryDirectory() as path:
+        pil_images = convert_from_path(pdf_path, output_folder=path)
+        return pil_images
+
+
+def increase_contrast(pil_image):
+    img = ImageEnhance.Contrast(pil_image).enhance(2.8)
+    pil_image = img.convert('RGBA')
+    return pil_image
+
+
+def remove_watermark_with_pil(pil_images: list) -> None:
+    res = []
+    for img in pil_images:
+        # im = Image.open(filename)
+        im = increase_contrast(img)
+        R, G, B = im.convert('RGB').split()
+        r = R.load()
+        g = G.load()
+        b = B.load()
+        w, h = im.size
+
+        # Convert non-black pixels to white
+        for i in range(w):
+            for j in range(h):
+                if(r[i, j] > 100 or g[i, j] > 100 or b[i, j] > 100):
+                    r[i, j] = 255  # Just change R channel
+
+        # Merge just the R channel as all channels
+        im = Image.merge('RGB', (R, R, R))
+        res.append(im)
+        # print(im)
+        # im.save(f"black_and_white_{index+1}.png")
+        # # im.show()
+    # return images without watermark
+    return res
+
+
+def convert_images_to_pdf(pil_images: list):
+    pil_images[0].save('cleaned_score.pdf', save_all=True,
+                       append_images=pil_images[1:])
+
+
+pil_images = pdf_to_images(pdf_path=pdf_two)
+images_no_watermarks = remove_watermark_with_pil(pil_images=pil_images)
+
+convert_images_to_pdf(images_no_watermarks)
+
 
 """
 def hsv_masking(image):
