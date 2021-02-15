@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='tailwind.css') }}"
+    />
+
+    <title>Watermark Remover</title>
+  </head>
+  <body id="app" class="h-screen w-screen">
+    <header class="container h-1/6 flex flex-col bg-red">
+      <h1>${message.toUpperCase()}</h1>
+      <nav class="ml-auto">
+        <ul class="list-none gap-10">
+          <li class="inline-block">Mupati</li>
+          <li class="inline-block">Portfolio</li>
+          <li class="inline-block">Contact</li>
+          <li class="inline-block">GitHub</li>
+        </ul>
+      </nav>
+    </header>
+    <main class="container h-2/3">
+      <h1 class="text-center mb-24 text-xl">Watermark Remover</h1>
+
+      <section class="h-full w-full">
+        <div class="flex items-center justify-center bg-grey-lighter">
+          <label
+            class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
+          >
+            <svg
+              class="w-8 h-8"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"
+              />
+            </svg>
+            <span class="mt-2 text-base leading-normal">Select a file</span>
+            <input type="file" class="hidden" />
+          </label>
+        </div>
+      </section>
+    </main>
+    <footer class="h-1/6">&copy;</footer>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const app = new Vue({
+        el: "#app",
+        delimiters: ["${", "}"],
+        data: {
+          message: "Vue is Working",
+        },
+      });
+    </script>
+  </body>
+</html>
