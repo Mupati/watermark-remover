@@ -9,59 +9,108 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='tailwind.css') }}"
     />
-
     <title>Watermark Remover</title>
   </head>
-  <body id="app" class="h-screen w-screen">
-    <header class="container h-1/6 flex flex-col bg-red">
-      <h1>${message.toUpperCase()}</h1>
-      <nav class="ml-auto">
-        <ul class="list-none gap-10">
-          <li class="inline-block">Mupati</li>
-          <li class="inline-block">Portfolio</li>
-          <li class="inline-block">Contact</li>
-          <li class="inline-block">GitHub</li>
-        </ul>
-      </nav>
-    </header>
-    <main class="container h-2/3">
-      <h1 class="text-center mb-24 text-xl">Watermark Remover</h1>
+  <body>
+    <div id="app">
+      <header class="flex flex-col">
+        <div>${ message }</div>
+        <nav class="ml-auto">
+          <ul class="list-none">
+            <li class="inline-block">Mupati</li>
+            <li class="inline-block">Portfolio</li>
+            <li class="inline-block">Contact</li>
+            <li class="inline-block">GitHub</li>
+          </ul>
+        </nav>
+      </header>
+      <main>
+        <h1 class="text-center mb-24 text-xl">${message}</h1>
 
-      <section class="h-full w-full">
-        <div class="flex items-center justify-center bg-grey-lighter">
-          <label
-            class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
-          >
-            <svg
-              class="w-8 h-8"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
+        <form class="h-full w-full" @submit.prevent="processFile">
+          <div class="flex items-center justify-center bg-grey-lighter">
+            <label
+              class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-blue"
             >
-              <path
-                d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"
+              <svg
+                class="w-8 h-8"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"
+                />
+              </svg>
+              <span class="mt-2 text-base leading-normal">Select a file</span>
+              <input
+                type="file"
+                name="file"
+                class="hidden"
+                ref="uploadedFile"
+                accept="image/*,.pdf"
               />
-            </svg>
-            <span class="mt-2 text-base leading-normal">Select a file</span>
-            <input type="file" class="hidden" />
-          </label>
-        </div>
-      </section>
-    </main>
-    <footer class="h-1/6">&copy;</footer>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+            </label>
+          </div>
+          <div class="text-center my-16">
+            <!-- :class="{ $refs.uploadFile.files.length !== 1 ? 'cursor-not-allowed' : '' }" -->
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              type="submit"
+            >
+              <!-- :disabled="$refs.uploadedFile.files.length !== 1" -->
+              Process File
+            </button>
+          </div>
+        </form>
+      </main>
+      <footer class="text-center py-5">
+        &copy; Watermark Remover -
+        <a
+          href="https://mupati.devcodes.co"
+          target="_blank"
+          noreferrer
+          nofollower
+          >Kofi Mupati</a
+        >
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
       integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
       crossorigin="anonymous"
     ></script>
     <script>
-      const app = new Vue({
+      var app = new Vue({
         el: "#app",
-        delimiters: ["${", "}"],
         data: {
           message: "Vue is Working",
+          isProcessing: false,
+          isError: false,
+          erroMessage: "",
         },
+        methods: {
+          processFile() {
+            this.isProcessing = true;
+            let formData = new FormData();
+
+            formData.append("file", this.$refs.uploadedFile.files[0]);
+            axios
+              .post("/process", formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
+              .then((res) => {
+                console.log(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          },
+        },
+        delimiters: ["${", "}"],
       });
     </script>
   </body>
