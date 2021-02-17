@@ -12,9 +12,9 @@
     <title>Watermark Remover</title>
   </head>
   <body>
-    <div id="app">
-      <header class="flex flex-col">
-        <div>${ message }</div>
+    <div id="app" class="flex flex-col">
+      <!-- <header class="flex flex-col">
+        <div>WTMRKRMVR</div>
         <nav class="ml-auto">
           <ul class="list-none">
             <li class="inline-block">Mupati</li>
@@ -23,9 +23,9 @@
             <li class="inline-block">GitHub</li>
           </ul>
         </nav>
-      </header>
-      <main>
-        <h1 class="text-center mb-24 text-xl">${message}</h1>
+      </header> -->
+      <main class="pt-32 flex-grow">
+        <h1 class="text-center mb-24 text-5xl">A WATERMARK REMOVER</h1>
 
         <form class="h-full w-full" @submit.prevent="processFile">
           <div class="flex items-center justify-center bg-grey-lighter">
@@ -48,23 +48,49 @@
                 name="file"
                 class="hidden"
                 ref="uploadedFile"
-                accept="image/*,.pdf"
+                accept=".png,.jpg,.jpeg,.pdf"
               />
             </label>
           </div>
           <div class="text-center my-16">
-            <!-- :class="{ $refs.uploadFile.files.length !== 1 ? 'cursor-not-allowed' : '' }" -->
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               type="submit"
             >
-              <!-- :disabled="$refs.uploadedFile.files.length !== 1" -->
               Process File
             </button>
           </div>
         </form>
+
+        <div
+          class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mx-auto max-w-md"
+          role="alert"
+          v-if="isError"
+        >
+          <p class="font-bold">Error</p>
+          <p>${errorMessage}</p>
+        </div>
+        <div class="text-center my-16" v-if="showDownloadButton">
+          <button
+            class="bg-green-700 hover:bg-green-500 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+          >
+            <svg
+              class="fill-current w-4 h-4 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+            </svg>
+            <a
+              :href="downloadLink"
+              target="_blank"
+              rel="noreferrer noopener nofollow"
+              >Download File</a
+            >
+          </button>
+        </div>
       </main>
-      <footer class="text-center py-5">
+      <footer class="text-center py-4 flex-none">
         &copy; Watermark Remover -
         <a
           href="https://mupati.devcodes.co"
@@ -85,17 +111,18 @@
       var app = new Vue({
         el: "#app",
         data: {
-          message: "Vue is Working",
           isProcessing: false,
           isError: false,
-          erroMessage: "",
+          errorMessage: "",
+          showDownloadButton: false,
+          downloadLink: "devcodes",
         },
         methods: {
           processFile() {
             this.isProcessing = true;
             let formData = new FormData();
-
             formData.append("file", this.$refs.uploadedFile.files[0]);
+
             axios
               .post("/process", formData, {
                 headers: {
@@ -103,10 +130,17 @@
                 },
               })
               .then((res) => {
-                console.log(res);
+                this.showDownloadButton = true;
+                this.downloadLink = res.data.processed_file_path;
               })
               .catch((err) => {
-                console.log(err);
+                this.isError = true;
+                this.errorMesssage = err.data.message;
+
+                setTimeout(() => {
+                  this.isError = false;
+                  this.errorMessage = "";
+                }, 4000);
               });
           },
         },

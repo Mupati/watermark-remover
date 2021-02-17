@@ -5,3 +5,4 @@
 *.jpeg
 
 *env
+uploads/*
