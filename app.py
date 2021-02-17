@@ -78,6 +78,10 @@ def processed_file_dir(filename):
 @app.route('/process', methods=['POST'])
 def proccess_file():
 
+    # Create uploads folder
+    if not os.path.exists('./uploads'):
+        os.mkdir('./uploads')
+
     # check if the post request has the file part
     if 'file' not in request.files:
         return jsonify(status="error", message="Missing image or PDF file"), 422
