@@ -4,8 +4,8 @@
 *.pdf
 *.jpeg
 
-*env
-uploads/*
+*.env
+
 venv/
 
 *.pyc
