@@ -23,10 +23,14 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='tailwind.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='main.css') }}"
+    />
     <title>Watermark Remover</title>
   </head>
   <body>
-    <div id="app" class="flex flex-col">
+    <div id="app" class="flex flex-col h-full">
       <!-- <header class="flex flex-col">
         <div>WTMRKRMVR</div>
         <nav class="ml-auto">
@@ -38,10 +42,13 @@
           </ul>
         </nav>
       </header> -->
-      <main class="pt-32 flex-grow">
-        <h1 class="text-center mb-24 text-5xl">A WATERMARK REMOVER</h1>
+      <main class="pt-32 mb-auto">
+        <h1 class="text-center mb-12 text-5xl">A WATERMARK REMOVER</h1>
+        <p class="text-center mb-12">
+          Remove watermark embedded in a PDF file or an image
+        </p>
 
-        <form class="h-full w-full" @submit.prevent="processFile">
+        <form @submit.prevent="processFile">
           <div class="flex items-center justify-center bg-grey-lighter">
             <label
               class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-blue"
@@ -68,9 +75,32 @@
           </div>
           <div class="text-center my-16">
             <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              :class="{'cursor-not-allowed': isProcessing}"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex"
               type="submit"
+              :disabled="isProcessing"
             >
+              <svg
+                class="animate-spin mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                v-if="isProcessing"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
               Process File
             </button>
           </div>
@@ -104,13 +134,14 @@
           </button>
         </div>
       </main>
-      <footer class="text-center py-4 flex-none">
-        &copy; Watermark Remover -
+      <footer class="text-center py-5 text-xl">
+        &copy; ${currentYear} | Watermark Remover -
         <a
           href="https://mupati.devcodes.co"
           target="_blank"
           noreferrer
           nofollower
+          class="p-2 hover:bg-green-500 hover:text-white rounded"
           >Kofi Mupati</a
         >
       </footer>
@@ -121,45 +152,6 @@
       integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
       crossorigin="anonymous"
     ></script>
-    <script>
-      var app = new Vue({
-        el: "#app",
-        data: {
-          isProcessing: false,
-          isError: false,
-          errorMessage: "",
-          showDownloadButton: false,
-          downloadLink: "devcodes",
-        },
-        methods: {
-          processFile() {
-            this.isProcessing = true;
-            let formData = new FormData();
-            formData.append("file", this.$refs.uploadedFile.files[0]);
-
-            axios
-              .post("/process", formData, {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              })
-              .then((res) => {
-                this.showDownloadButton = true;
-                this.downloadLink = res.data.processed_file_path;
-              })
-              .catch((err) => {
-                this.isError = true;
-                this.errorMesssage = err.data.message;
-
-                setTimeout(() => {
-                  this.isError = false;
-                  this.errorMessage = "";
-                }, 4000);
-              });
-          },
-        },
-        delimiters: ["${", "}"],
-      });
-    </script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
   </body>
 </html>
