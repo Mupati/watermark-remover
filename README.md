@@ -1,4 +1,6 @@
-# PDF Watermark Remover
+# A Collection of Flask Projects and Tutorial Demos
+
+## PDF Watermark Remover
 
 A simple web application to remove watermarks from pdf files
 

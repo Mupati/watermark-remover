@@ -1,0 +1,18 @@
+main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgb(9, 9, 121);
+  background: radial-gradient(
+    circle,
+    rgba(9, 9, 121, 1) 22%,
+    rgba(2, 159, 220, 1) 71%,
+    rgba(1, 184, 236, 1) 91%
+  );
+}
+.card {
+  width: 50vw;
+  padding: 2% 10%;
+}

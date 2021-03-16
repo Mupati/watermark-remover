@@ -12,3 +12,5 @@ venv/
 __pycache__/
 
 instance/
+todo.txt
+app/uploads

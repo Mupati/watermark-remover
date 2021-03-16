@@ -15,7 +15,7 @@ const app = new Vue({
       formData.append("file", this.$refs.uploadedFile.files[0]);
 
       axios
-        .post("/process", formData, {
+        .post("/watermark/process", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

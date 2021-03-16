@@ -21,11 +21,11 @@
 
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='tailwind.css') }}"
+      href="{{ url_for('static', filename='watermark_remover/tailwind.css') }}"
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='main.css') }}"
+      href="{{ url_for('static', filename='watermark_remover/index.css') }}"
     />
     <title>Watermark Remover</title>
   </head>
@@ -147,11 +147,7 @@
       </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
-      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
-      crossorigin="anonymous"
-    ></script>
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="{{ url_for('static', filename='watermark_remover/index.js') }}"></script>
   </body>
 </html>

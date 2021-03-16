@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Mupati Flask Projects</title>
+  </head>
+  <body>
+    <ul>
+      {% if g.user %}
+        <li><span>{{ g.user['username'] }}</span>
+        <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+      {% else %}
+        <li><a href="{{ url_for('auth.register') }}">Register</a>
+        <li><a href="{{ url_for('auth.login') }}">Log In</a>
+      {% endif %}
+    </ul>
+  </nav>
+    <h1>My Collection of Apps and Tutorials Built with Flask</h1>
+    <ul>
+      <li><a href="{{ url_for('watermark_remover.index') }}">Watermark Remover</a></li>
+      <li><a href="{{ url_for('agora.index') }}">Agora Projects</a></li>
+      <li><a href="{{ url_for('webrtc.index') }}">WebRTC Projects</a></li>
+    </ul>
+  </body>
+</html>
