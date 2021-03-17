@@ -16,9 +16,7 @@ def login():
     else:
         form = LoginForm()
         if form.validate_on_submit():
-            print(f"form: {form}")
             user = User.query.filter_by(email=form.email.data).first()
-            print(f"user: {user}")
 
             # check password validity
             if user is not None and user.verify_password(
