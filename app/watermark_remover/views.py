@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify
+from flask import request, render_template, jsonify, current_app
 
 from PIL import Image, ImageEnhance
 
@@ -9,10 +9,8 @@ import os
 from werkzeug.utils import secure_filename
 
 from . import watermark_remover
-from .. import create_app
 
-flask_app = create_app()
-
+flask_app = current_app
 
 UPLOAD_FOLDER = '../uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
@@ -23,7 +21,6 @@ flask_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 flask_app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
 
 # Image Processing Functions
-
 
 def pdf_to_images(pdf_path: str) -> list:
     with tempfile.TemporaryDirectory() as path:

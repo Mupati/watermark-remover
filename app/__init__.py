@@ -40,9 +40,10 @@ def create_app():
     from .agora import agora as agora_blueprint
     app.register_blueprint(agora_blueprint)
 
-    # blueprint for watermark remover
-    from .watermark_remover import watermark_remover as watermark_remover_blueprint
-    app.register_blueprint(watermark_remover_blueprint)
+    with app.app_context():
+        # blueprint for watermark remover
+        from .watermark_remover import watermark_remover as watermark_remover_blueprint
+        app.register_blueprint(watermark_remover_blueprint)
 
     # blueprint from webrtc apps
     from .webrtc import webrtc as webrtc_blueprint
@@ -54,7 +55,6 @@ def create_app():
 
     @app.before_request
     def before_request():
-        print(f"before request current user: {current_user}")
         if current_user.is_authenticated:
             g.user = current_user
 

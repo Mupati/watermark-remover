@@ -91,7 +91,7 @@ const app = new Vue({
 
         // // Broadcasts a call event to the callee and also gets back the token
         let placeCallRes = await axios.post(
-          "/call-user/",
+          "/agora/call-user",
           {
             user_to_call: id,
             channel_name: channelName,
@@ -128,7 +128,7 @@ const app = new Vue({
 
     generateToken(channelName) {
       return axios.post(
-        "/token/",
+        "/agora/token",
         {
           channelName,
         },

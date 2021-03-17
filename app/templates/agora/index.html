@@ -43,19 +43,20 @@
           <div class="row">
             <div class="col">
               <div class="btn-group" role="group">
-                {% for singleUser in allUsers%}
+                {% for singleUser in allUsers%} {% if singleUser['id'] !=
+                current_user['id'] %}
                 <button
                   type="button"
                   class="btn btn-primary mr-2"
-                  @click="placeCall('{{singleUser.id}}','{{singleUser}}')"
+                  @click="placeCall('{{singleUser.id}}','{{singleUser['username']}}')"
                 >
-                  Call {{ singleUser }}
+                  Call {{ singleUser['username'] }}
                   <span class="badge badge-light"
                     >${ getUserOnlineStatus({{singleUser.id}})}</span
                   >
                 </button>
 
-                {% endfor %}
+                {% endif %} {% endfor %}
               </div>
             </div>
           </div>
@@ -117,7 +118,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/7.0.3/pusher.min.js"></script>
     <script>
       window.pusher = new Pusher("420e941c25574fda6378", {
-        authEndpoint: "{% url 'agora-pusher-auth' %}",
+        authEndpoint: "{{ url_for('agora.pusher_auth') }}",
         auth: {
           headers: {
             "X-CSRFToken": "{{ csrf_token }}",
@@ -125,8 +126,8 @@
         },
       });
 
-      const AUTH_USER = "{{user}}";
-      const AUTH_USER_ID = "{{request.user.id}}";
+      const AUTH_USER = "{{current_user['username']}}";
+      const AUTH_USER_ID = "{{current_user['id']}}";
       const CSRF_TOKEN = "{{ csrf_token }}";
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>

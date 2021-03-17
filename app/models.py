@@ -33,6 +33,11 @@ class User(UserMixin, db.Model):
         """
         return check_password_hash(self.password_hash, password)
 
+    def to_json(self):
+        return dict(id=self.id,
+                    username=self.username,
+                    email=self.email)
+
     def __repr__(self):
         return '<User: {}>'.format(self.username)
 
@@ -40,5 +45,4 @@ class User(UserMixin, db.Model):
 # Set up user_loader
 @login_manager.user_loader
 def load_user(user_id):
-    print(f"user loader: {User.query.get(int(user_id))}")
     return User.query.get(int(user_id))
