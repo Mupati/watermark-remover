@@ -2,7 +2,7 @@ import os
 from flask import Flask, g
 from flask_login import LoginManager, current_user
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, current
+from flask_migrate import Migrate
 
 from .errors import Errors
 
