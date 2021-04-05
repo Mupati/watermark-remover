@@ -12,15 +12,17 @@ from . import watermark_remover
 
 flask_app = current_app
 
-UPLOAD_FOLDER = '../uploads'
+UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 
 
-flask_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+flask_app.config['UPLOAD_FOLDER'] = os.path.join(
+    flask_app.root_path, UPLOAD_FOLDER)
 # 20MB file size limit
 flask_app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
 
 # Image Processing Functions
+
 
 def pdf_to_images(pdf_path: str) -> list:
     with tempfile.TemporaryDirectory() as path:
@@ -74,7 +76,7 @@ def index():
     return render_template('watermark_remover/index.html')
 
 
-@watermark_remover.route('/watermark/upload/<path:filename>')
+@watermark_remover.route('/watermark/uploads/<path:filename>')
 def processed_file_dir(filename):
     return send_from_directory(flask_app.config['UPLOAD_FOLDER'], filename)
 
@@ -83,8 +85,8 @@ def processed_file_dir(filename):
 def proccess_file():
 
     # Create uploads folder
-    if not os.path.exists('../uploads'):
-        os.mkdir('../uploads')
+    if not os.path.exists('app/uploads'):
+        os.mkdir('app/uploads')
 
     # check if the post request has the file part
     if 'file' not in request.files:
