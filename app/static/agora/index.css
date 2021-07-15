@@ -51,6 +51,6 @@ main {
   flex-wrap: wrap;
 }
 
-#btnGroup {
+.btn-group, #btnGroup {
   flex-wrap: wrap;
 }
