@@ -36,9 +36,13 @@ def create_app():
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
 
-    # blueprint for agora
+    # blueprint for agora rtc + pusher
     from .agora import agora as agora_blueprint
     app.register_blueprint(agora_blueprint)
+
+    # blueprint for agora rtc + agora rtm
+    from .agora_rtm import agora_rtm as agora_rtm_blueprint
+    app.register_blueprint(agora_rtm_blueprint)
 
     with app.app_context():
         # blueprint for watermark remover
