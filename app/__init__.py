@@ -44,6 +44,10 @@ def create_app():
     from .agora_rtm import agora_rtm as agora_rtm_blueprint
     app.register_blueprint(agora_rtm_blueprint)
 
+    # blueprint for agora_cloud_recording
+    from .agora_cloud_recording import agora_cloud_recording as agora_cloud_recording_blueprint
+    app.register_blueprint(agora_cloud_recording_blueprint)
+
     with app.app_context():
         # blueprint for watermark remover
         from .watermark_remover import watermark_remover as watermark_remover_blueprint
